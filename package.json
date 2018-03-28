@@ -1,9 +1,11 @@
 {
-  "name": "ember-odyssey",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "name": "ember-cli-odyssey",
+  "version": "0.1.0",
+  "description": "Random walks for acceptance tests.",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "random-walk",
+    "test"
   ],
   "license": "MIT",
   "author": "",

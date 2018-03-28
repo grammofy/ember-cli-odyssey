@@ -1,13 +1,13 @@
-ember-odyssey
+ember-cli-odyssey
 ==============================================================================
 
-[Short description of the addon.]
+Random walks for acceptance tests.
 
 Installation
 ------------------------------------------------------------------------------
 
 ```
-ember install ember-odyssey
+ember install ember-cli-odyssey
 ```
 
 
@@ -23,7 +23,7 @@ Contributing
 ### Installation
 
 * `git clone <repository-url>`
-* `cd ember-odyssey`
+* `cd ember-cli-odyssey`
 * `npm install`
 
 ### Linting

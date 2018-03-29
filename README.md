@@ -14,8 +14,75 @@ ember install ember-cli-odyssey
 Usage
 ------------------------------------------------------------------------------
 
-[Longer description of how to use the addon in apps.]
+In your acceptance test import `RandomWalk`:
 
+```js
+import RandomWalk from 'ember-cli-odyssey';
+```
+
+Then setup your custom steps for an odyssey through the app (The sample uses [ember-cli-page-object](https://github.com/san650/ember-cli-page-object)):
+
+```js
+import rootPage from '../../pages/root';
+import loginPage from '../../pages/auth/login';
+import profilePage from '../../pages/auth/profile';
+
+test('odyssey through the app', async function (assert) {
+  // define all things that are needed for the steps, e.g. email, password...
+
+  const randomWalk = new RandomWalk(this, assert);
+
+  randomWalk.addStep('visitRootPage', {
+    isApplicable: () => currentURL() !== '/',
+    async execute() {
+      await rootPage.visit();
+      assert.equal(currentURL(), '/', 'I can visit the root page');
+  });
+
+  randomWalk.addStep('visitLoginPage', {
+    isApplicable: () => currentURL() === '/',
+    async execute: () => await rootPage.clickLogin(),
+  });
+
+  randomWalk.addStep('login', {
+    isApplicable: () => currentURL() === '/login',
+    async execute: () => await loginPage.login(email, password),
+  });
+
+  randomWalk.addStep('visitUserProfile', {
+    isApplicable: () => currentURL() !== '/login',
+    async execute() {
+      await profilePage.visit();
+      assert.equal(currentURL(), '/profile', 'I can visit the profile page');
+    },
+  });
+
+  randomWalk.addStep('editUserProfile', {
+    isApplicable: () => currentURL() === '/profile',
+    async execute() {
+      await profilePage
+        .name('Howard Hamster')
+        .username('emberman')
+        .submit();
+
+      assert.equal(currentURL(), '/profile', 'After editing my profile I stay on the profile page');
+      assert.equal(profilePage.name(), 'Howard Hamster', 'My name got changed');
+      assert.equal(profilePage.name(), 'emberman', 'My username got changed');
+    },
+  });
+
+  // Doing the random walk
+
+  randomWalk.setup();
+
+  // do a few deterministic steps
+  await randomWalk.execute('visitLoginPage');
+  await randomWalk.execute('login');
+
+  // and then 20 random steps
+  await randomWalk.doSteps(20);
+}
+```
 
 Contributing
 ------------------------------------------------------------------------------

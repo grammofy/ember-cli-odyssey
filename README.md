@@ -67,7 +67,7 @@ test('odyssey through the app', async function (assert) {
 
       assert.equal(currentURL(), '/profile', 'After editing my profile I stay on the profile page');
       assert.equal(profilePage.name(), 'Howard Hamster', 'My name got changed');
-      assert.equal(profilePage.name(), 'emberman', 'My username got changed');
+      assert.equal(profilePage.username(), 'emberman', 'My username got changed');
     },
   });
 
@@ -81,7 +81,7 @@ test('odyssey through the app', async function (assert) {
 
   // and then 20 random steps
   await randomWalk.doSteps(20);
-}
+});
 ```
 
 Contributing

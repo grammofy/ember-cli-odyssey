@@ -20,8 +20,4 @@ module.exports = {
       registry: this.registry,
     });
   },
-
-  isDevelopingAddon() {
-    return true;
-  }
 };

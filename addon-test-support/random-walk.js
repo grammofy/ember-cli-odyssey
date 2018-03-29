@@ -24,7 +24,7 @@ class RandomWalk {
     this.consistencyChecks = [];
   }
 
-  addStep(name, options) {
+  addStep(name, options, params) {
     options.name = name;
 
     if (!options.weight) {
@@ -41,7 +41,7 @@ class RandomWalk {
       }
     });
 
-    this.steps.pushObject(options);
+    this.steps.pushObject({ step: options, params });
   }
 
   async doSteps(count) {
@@ -55,14 +55,14 @@ class RandomWalk {
   }
 
   async doRandomStep() {
-    const possibleSteps = this.steps.filter(step => step.isApplicable());
+    const possibleSteps = this.steps.filter(item => item.step.isApplicable());
 
     if (!possibleSteps.length) {
       throw 'No possible steps found!';
     }
 
-    const nextStep = sample(possibleSteps);
-    await this.doStep(nextStep);
+    const { step, params } = sample(possibleSteps);
+    await this.doStep(step, params);
   }
 
   async doStep(step, params) {
@@ -70,19 +70,19 @@ class RandomWalk {
       params = {};
     }
 
-    this.history.pushObject({ step, params});
+    this.history.pushObject({ step, params });
     await step.execute(this.assert, params);
   }
 
-  async execute(name, params) {
-    const steps = this.steps.filter(step => step.name === name);
+  async execute(name, newParams) {
+    const steps = this.steps.filter(item => item.step.name === name);
 
     if (steps.length === 0) {
       throw `No step with name '${name}' found!`;
     }
 
-    const step = steps[0];
-    await this.doStep(step, params);
+    const { step, params } = steps[0];
+    await this.doStep(step, newParams || params);
   }
 
   async repeatFromHistory(history) {

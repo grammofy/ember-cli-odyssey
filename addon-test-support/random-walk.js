@@ -41,7 +41,7 @@ class RandomWalk {
       }
     });
 
-    this.steps.pushObject({ step: options, params });
+    this.steps.push({ step: options, params });
   }
 
   async doSteps(count) {
@@ -70,7 +70,7 @@ class RandomWalk {
       params = {};
     }
 
-    this.history.pushObject({ step, params });
+    this.history.push({ step, params });
     await step.execute(this.assert, params);
   }
 
